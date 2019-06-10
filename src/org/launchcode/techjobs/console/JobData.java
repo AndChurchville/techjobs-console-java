@@ -75,10 +75,37 @@ public class JobData {
         for (HashMap<String, String> row : allJobs) {
 
             String aValue = row.get(column);
+            String aValueLower = aValue.toLowerCase();
+            String valueLower = value.toLowerCase();
 
-            if (aValue.contains(value)) {
+            if (aValueLower.contains(valueLower)) {
                 jobs.add(row);
             }
+        }
+
+        return jobs;
+    }
+
+    public static ArrayList<HashMap<String, String>> findByValue(String value) {
+
+        // load data, if not already loaded
+        loadData();
+        Boolean isAdded = false;
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
+
+        for (HashMap<String, String> row : allJobs) {
+            for (String column : row.keySet()){
+                String jobTerm = row.get(column);
+                String searchValueLower = jobTerm.toLowerCase();
+                String valueLower = value.toLowerCase();
+                if (searchValueLower.contains(valueLower)) {
+                    if(!isAdded){
+                        jobs.add(row);
+                        isAdded = true;
+                    }
+                }
+            }
+            isAdded = false;
         }
 
         return jobs;
